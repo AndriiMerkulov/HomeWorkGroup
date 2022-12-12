@@ -129,4 +129,3 @@ class Company:
     def pay_all(self) -> None:
         """Pay all the employees in this company"""
 
-        # TODO: implement this method
