@@ -23,6 +23,7 @@ class Employee:
 
     @property
     def fullname(self):
+        """Return the full name of the employee"""
         return self.first_name, self.last_name
 
     def __str__(self) -> str:
@@ -115,14 +116,14 @@ class Company:
 
         if isinstance(employee, SalariedEmployee):
             msg = (
-                "Paying monthly salary of %.2f to %s"
-            ) % (employee.salary, employee)
+                      "Paying monthly salary of %.2f to %s"
+                  ) % (employee.salary, employee)
             logger.info(f"Paying monthly salary to {employee}")
 
         if isinstance(employee, HourlyEmployee):
             msg = (
-                "Paying %s hourly rate of %.2f for %d hours"
-            ) % (employee, employee.hourly_rate, employee.amount)
+                      "Paying %s hourly rate of %.2f for %d hours"
+                  ) % (employee, employee.hourly_rate, employee.amount)
             logger.info(msg)
 
     def pay_all(self) -> None:
