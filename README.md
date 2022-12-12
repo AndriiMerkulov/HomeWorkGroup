@@ -2,8 +2,8 @@
 
 Contributors:
 
-- ...
-- ...
+- Andrii Merkulov
+- group.
 
 ## Tasks
 
