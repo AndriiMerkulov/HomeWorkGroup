@@ -14,7 +14,14 @@ logger.setLevel(logging.INFO)
 # noinspection PyTypeChecker
 @dataclass
 class Employee:
-    """Basic employee representation"""
+    """ Це клас Працівники, тут ми створюємо об'єкти які будуть нашими працівниками.
+
+    :first_name: Ім'я працівника
+    :last_name: Прізвище працівника
+    :role: посада працівника
+    :vacation_days: кількість не використаної відпустки
+
+    """
 
     first_name: str
     last_name: str
@@ -26,38 +33,46 @@ class Employee:
         """Return the full name of the employee"""
         return self.first_name, self.last_name
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         """Return a string version of an instance"""
-
-        return self.fullname
+        return f"{self.fullname}"
 
     def take_holiday(self, payout: bool = False) -> None:
-        """Take a single holiday or a payout vacation"""
+        """ Метод інформує, скільки днів оплачуваної відпустки можна взяти,
+            а також скільки неоплачуваної.
+            В параметри можна передати True або False
+        """
 
         remaining = self.vacation_days
         if payout:
             if self.vacation_days < 5:
                 msg = f"{self} have not enough vacation days. " \
-                      f"Remaining days: %d. Requested: %d" % (remaining, 5)
-                raise ValueError(msg)
-            self.vacation_days -= 5
-            msg = "Taking a holiday. Remaining vacation days: %d" % remaining
-            logger.info(msg)
+                      f"Remaining days: {remaining}. Requested: {5}"
+                return msg
+                # raise ValueError(msg)
+            else:
+                self.vacation_days -= 5
+                msg = f"Taking a holiday. Remaining vacation days: {remaining}"
+                return msg
+                # logger.info(msg)
         else:
             if self.vacation_days < 1:
                 remaining = self.vacation_days
                 msg = f"{self} have not enough vacation days. " \
-                      f"Remaining days: %d. Requested: %d" % (remaining, 1)
-                raise ValueError(msg)
-            self.vacation_days -= 1
-            msg = "Taking a payout. Remaining vacation days: %d" % remaining
-            logger.info(msg)
+                      f"Remaining days: {remaining}. Requested: {1}"
+                # raise ValueError(msg)
+                return msg
+            else:
+                self.vacation_days -= 1
+                msg = f"Taking a payout. Remaining vacation days: {remaining}"
+                return msg
+                # logger.info(msg)
 
 
 # noinspection PyTypeChecker
 @dataclass
 class HourlyEmployee(Employee):
-    """Represents employees who are paid on worked hours base"""
+    """Працівники у яких погодинна оплата праці"""
 
     amount: int = 0
     hourly_rate: int = 50
@@ -71,17 +86,17 @@ class HourlyEmployee(Employee):
 # noinspection PyTypeChecker
 @dataclass
 class SalariedEmployee(Employee):
-    """Represents employees who are paid on a monthly salary base"""
+    """Ставка працівника на місяць, значення стале"""
 
     salary: int = 5000
 
 
-# noinspection PyTypeChecker
+@dataclass
 class Company:
     """A company representation"""
 
     title: str
-    employees: list[Employee] = []
+    employees: list[Employee]
 
     def get_ceos(self) -> list[Employee]:
         """Return employees list with role of CEO"""
@@ -112,13 +127,14 @@ class Company:
 
     @staticmethod
     def pay(employee: Employee) -> None:
-        """Pay to employee"""
+        """ Рахує зарплату працівника """
 
         if isinstance(employee, SalariedEmployee):
             msg = (
                       "Paying monthly salary of %.2f to %s"
                   ) % (employee.salary, employee)
             logger.info(f"Paying monthly salary to {employee}")
+            logger.info(msg)
 
         if isinstance(employee, HourlyEmployee):
             msg = (
@@ -126,6 +142,6 @@ class Company:
                   ) % (employee, employee.hourly_rate, employee.amount)
             logger.info(msg)
 
+    # цей метод треба доробити
     def pay_all(self) -> None:
         """Pay all the employees in this company"""
-
