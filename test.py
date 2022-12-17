@@ -3,7 +3,7 @@ from system import *
 user_1 = Employee('Andrii', 'Godevening', 'CEO', 2)
 user_2 = Employee('Ivan', 'Reacher', 'dev', 10)
 user_3 = Employee('Viva', 'Muhailova', 'manager', 1)
-user_4 = Employee('Esmeralda', 'Kuchma', 'CEO', 22)
+user_4 = Employee('Esmeralda', 'Kuchma', 'CEO', 4)
 user_5 = Employee('Xena', 'Warrior', 'manager', 0)
 user_7 = Employee('Hercules', 'Weak', 'dev', 4)
 
@@ -11,6 +11,7 @@ user_7 = Employee('Hercules', 'Weak', 'dev', 4)
 # user_1.take_holiday(True)
 
 print(f"{user_2.fullname} >>> {user_2.take_holiday(True)}")
+print(f"{user_4.fullname} >>> {user_4.take_holiday(True)}")
 print(f"{user_3.fullname} >>> {user_3.take_holiday()}")
 print(f"{user_7.fullname} >>> {user_7.take_holiday()}")
 print(f"{user_5.fullname} >>> {user_5.take_holiday()}")
