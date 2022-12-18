@@ -2,8 +2,10 @@
 
 Contributors:
 
+- Serhii Mazur
+- Ruslan Matvienko
+- Denys Mednov
 - Andrii Merkulov
-- group.
 
 ## Tasks
 
