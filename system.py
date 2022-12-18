@@ -48,6 +48,10 @@ class HourlyEmployee(Employee):
         """Log working hours"""
         self.amount += hours
 
+    def __repr__(self) -> str:
+        """Return a string version of an instance"""
+        return f"{self.fullname}"
+
 
 # noinspection PyTypeChecker
 @dataclass
@@ -152,4 +156,8 @@ class Company:
         total_pay = 0
         for employee in self.employees:
             total_pay += Company.pay(employee)
+        msg = (
+            f'Total pay for employees is {total_pay}'
+        )
+        logger.info(msg)
         return total_pay
