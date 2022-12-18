@@ -19,14 +19,12 @@ class Employee:
     :first_name: Ім'я працівника
     :last_name: Прізвище працівника
     :role: посада працівника
-    :vacation_days: кількість не використаної відпустки
 
     """
 
     first_name: str
     last_name: str
     role: str
-    vacation_days: int = 25
 
     @property
     def fullname(self):
@@ -37,37 +35,6 @@ class Employee:
         """Return a string version of an instance"""
         return f"{self.fullname}"
 
-    def take_holiday(self, payout: bool = False) -> None:
-        """ Метод інформує, скільки днів оплачуваної відпустки можна взяти,
-            а також скільки неоплачуваної.
-            В параметри можна передати True або False
-        """
-
-        remaining = self.vacation_days
-        if payout:
-            if self.vacation_days < 5:
-                msg = f"{self} have not enough vacation days. " \
-                      f"Remaining days: {remaining}. Requested: {5}"
-                return msg
-                # raise ValueError(msg)
-            else:
-                self.vacation_days -= 5
-                msg = f"Taking a holiday. Remaining vacation days: {remaining}"
-                return msg
-                # logger.info(msg)
-        else:
-            if self.vacation_days < 1:
-                remaining = self.vacation_days
-                msg = f"{self} have not enough vacation days. " \
-                      f"Remaining days: {remaining}. Requested: {1}"
-                # raise ValueError(msg)
-                return msg
-            else:
-                self.vacation_days -= 1
-                msg = f"Taking a payout. Remaining vacation days: {remaining}"
-                return msg
-                # logger.info(msg)
-
 
 # noinspection PyTypeChecker
 @dataclass
@@ -75,20 +42,53 @@ class HourlyEmployee(Employee):
     """Працівники у яких погодинна оплата праці"""
 
     amount: int = 0
-    hourly_rate: int = 50
+    hourly_rate: float = 50.0
 
     def log_work(self, hours: int) -> None:
         """Log working hours"""
-
         self.amount += hours
 
 
 # noinspection PyTypeChecker
 @dataclass
 class SalariedEmployee(Employee):
-    """Ставка працівника на місяць, значення стале"""
+    """Ставка працівника на місяць"""
 
-    salary: int = 5000
+    salary: float
+    vacation_days: int
+
+    def take_holiday(self, requested_days: int = 1, payout: bool = False) -> None:
+        """ Метод інформує, скільки днів оплачуваної відпустки можна взяти,
+            а також скільки неоплачуваної.
+            В параметри можна передати True або False
+        """
+
+        if payout:
+            if self.vacation_days < 5:
+                msg = f"{self} have not enough vacation days. " \
+                      f"Remaining days: {self.vacation_days}. Requested: {requested_days}"
+                return msg
+                # raise ValueError(msg)
+            else:
+                self.vacation_days -= requested_days
+                msg = f"Taking a vocation. Remaining vacation days: {self.vacation_days}"
+                return msg
+                # logger.info(msg)
+        else:
+            if self.vacation_days < 1:
+                msg = f"{self} have not enough vacation days. " \
+                      f"Remaining days: {self.vacation_days}. Requested: {1}"
+                # raise ValueError(msg)
+                return msg
+            else:
+                self.vacation_days -= 1
+                msg = f"Taking a payout. Remaining vacation days: {self.vacation_days}"
+                return msg
+                # logger.info(msg)
+
+    def __repr__(self) -> str:
+        """Return a string version of an instance"""
+        return f"{self.fullname}"
 
 
 @dataclass
@@ -103,7 +103,7 @@ class Company:
 
         result = []
         for employee in self.employees:
-            if employee.role == "CEO":
+            if employee.role.lower() == "CEO":
                 result.append(employee)
         return result
 
@@ -112,7 +112,7 @@ class Company:
 
         result = []
         for employee in self.employees:
-            if employee.role == "manager":
+            if employee.role.lower() == "manager":
                 result.append(employee)
         return result
 
@@ -121,26 +121,30 @@ class Company:
 
         result = []
         for employee in self.employees:
-            if employee.role == "dev":
+            if employee.role.lower() == "dev":
                 result.append(employee)
         return result
 
     @staticmethod
-    def pay(employee: Employee) -> None:
+    def pay(employee: Employee) -> float:
         """ Рахує зарплату працівника """
 
         if isinstance(employee, SalariedEmployee):
             msg = (
                       "Paying monthly salary of %.2f to %s"
-                  ) % (employee.salary, employee)
+                  ) % (employee.salary, employee.fullname)
             logger.info(f"Paying monthly salary to {employee}")
             logger.info(msg)
+            return employee.salary
 
         if isinstance(employee, HourlyEmployee):
+            paying = employee.hourly_rate * employee.amount
             msg = (
-                      "Paying %s hourly rate of %.2f for %d hours"
-                  ) % (employee, employee.hourly_rate, employee.amount)
+                      "Paying %s hourly rate of %.2f for %i hours is $%.2f"
+                  ) % (employee.fullname, employee.hourly_rate, employee.amount,
+                       paying)
             logger.info(msg)
+            return paying
 
     # цей метод треба доробити
     def pay_all(self) -> None:
