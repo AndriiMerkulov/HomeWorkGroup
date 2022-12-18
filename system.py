@@ -147,5 +147,9 @@ class Company:
             return paying
 
     # цей метод треба доробити
-    def pay_all(self) -> None:
+    def pay_all(self) -> float:
         """Pay all the employees in this company"""
+        total_pay = 0
+        for employee in self.employees:
+            total_pay += Company.pay(employee)
+        return total_pay

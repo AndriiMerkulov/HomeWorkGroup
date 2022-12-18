@@ -18,8 +18,8 @@ from system import *
 # print(f"{user_5.fullname} >>> {user_5.take_holiday()}")
 
 employee_1 = HourlyEmployee("Serhii", "Mazur", "developer", 100)
-employee_2 = HourlyEmployee("Andrii", "Merkulov", "CEO", 12)
-employee_3 = SalariedEmployee("Gramatton", "Clerick", "manager", 22500.0, 4)
+employee_2 = HourlyEmployee("Andrii", "Merkulov", "CEO", 200)
+employee_3 = SalariedEmployee("Gramatton", "Clerick", "manager", 100, 4)
 
 firma = Company("ETA", [employee_1, employee_2, employee_3])
 
@@ -32,3 +32,4 @@ firma = Company("ETA", [employee_1, employee_2, employee_3])
 print(firma.pay(employee_1))
 print(firma.pay(employee_2))
 print(firma.pay(employee_3))
+print(firma.pay_all())
