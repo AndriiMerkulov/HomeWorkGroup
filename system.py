@@ -11,7 +11,6 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-# noinspection PyTypeChecker
 @dataclass
 class Employee:
     """Basic employee representation"""
@@ -20,14 +19,11 @@ class Employee:
     last_name: str
     role: str
 
-
     @property
     def fullname(self):
         return f"{self.first_name} {self.last_name}"
 
 
-
-# noinspection PyTypeChecker
 @dataclass
 class HourlyEmployee(Employee):
     """Represents employees who are paid on worked hours base"""
@@ -35,14 +31,12 @@ class HourlyEmployee(Employee):
     hours_worked: int = 0
     hourly_rate: float = 50.0
 
-
     def log_work(self, hours: int) -> None:
         """Log working hours"""
 
         self.hours_worked += hours
 
 
-# noinspection PyTypeChecker
 @dataclass
 class SalariedEmployee(Employee):
     """Represents employees who are paid on a monthly salary base"""
@@ -77,7 +71,6 @@ class SalariedEmployee(Employee):
                 logger.info(va)
 
 
-# noinspection PyTypeChecker
 @dataclass
 class Company:
     """A company representation"""
@@ -118,16 +111,16 @@ class Company:
 
         if isinstance(employee, SalariedEmployee):
             msg = (
-                "Paying monthly salary of $%.2f to %s."
-            ) % (employee.salary, employee.fullname)
+                      "Paying monthly salary of $%.2f to %s."
+                  ) % (employee.salary, employee.fullname)
             logger.info(msg)
             return employee.salary
 
         if isinstance(employee, HourlyEmployee):
             paying = employee.hourly_rate * employee.hours_worked
             msg = (
-                "Paying %s hourly rate of %.2f for %i hours is $%.2f."
-            ) % (employee.fullname, employee.hourly_rate, employee.hours_worked, paying)
+                      "Paying %s hourly rate of %.2f for %i hours is $%.2f."
+                  ) % (employee.fullname, employee.hourly_rate, employee.hours_worked, paying)
             logger.info(msg)
             return paying
 
@@ -142,7 +135,3 @@ class Company:
               ) % (total_pay)
         logger.info(msg)
         return total_pay
-
-
-if __name__ == "__main__":
-    ...
