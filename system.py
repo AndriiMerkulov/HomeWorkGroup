@@ -99,7 +99,7 @@ class Company:
                 "Paying %s hourly rate of %.2f for %i hours is $%.2f."
             ) % (employee.fullname, employee.hourly_rate, employee.hours_worked, paying)
             logger.info(msg)
-            return employee.hourly_rate * employee.hours_worked
+            return paying
 
     def pay_all(self) -> None:
         """Pay all the employees in this company"""
