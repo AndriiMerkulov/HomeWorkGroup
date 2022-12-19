@@ -44,13 +44,11 @@ class SalariedEmployee(Employee):
     salary: float
     vacation_days: int = 0
 
-    def _check_vacation_days(self, requested_days: int) -> None:
+    def take_holiday(self, requested_days: int = 1, payout: bool = False) -> None:
         if self.vacation_days < requested_days:
             msg = f"{self.fullname} have not enough vacation days. Remaining days: {self.vacation_days}. Requested: {requested_days}"
-            raise ValueError(msg)
-
-    def take_holiday(self, requested_days: int = 1, payout: bool = False) -> None:
-        self._check_vacation_days(requested_days)
+            logger.error(msg)
+            return
         self.vacation_days -= requested_days
         if payout:
             msg = f"Taking a payout vacation, {requested_days} days. Remaining vacation days: {self.vacation_days}"
@@ -106,3 +104,5 @@ class Company:
               ) % total_pay
         logger.info(msg)
         return total_pay
+
+
