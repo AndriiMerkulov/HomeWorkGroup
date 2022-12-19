@@ -44,33 +44,22 @@ class SalariedEmployee(Employee):
     salary: float
     vacation_days: int = 0
 
+    def _check_vacation_days(self, requested_days: int) -> None:
+        if self.vacation_days < requested_days:
+            msg = f"{self.fullname} have not enough vacation days. Remaining days: {self.vacation_days}. Requested: {requested_days}"
+            raise ValueError(msg)
+
     def take_holiday(self, requested_days: int = 1, payout: bool = False) -> None:
-        """Take a single holiday or a payout vacation"""
-
+        self._check_vacation_days(requested_days)
+        self.vacation_days -= requested_days
         if payout:
-            try:
-                if self.vacation_days < requested_days:
-                    msg = f"{self.fullname} have not enough vacation days. " \
-                          f"Remaining days: {self.vacation_days}. Requested: {requested_days}"
-                    raise ValueError(msg)
-                self.vacation_days -= requested_days
-                msg = f"Taking a payout vacation, {requested_days} days. Remaining vacation days: {self.vacation_days}"
-                logger.info(msg)
-            except ValueError as va:
-                logger.info(va)
+            msg = f"Taking a payout vacation, {requested_days} days. Remaining vacation days: {self.vacation_days}"
         else:
-            try:
-                if self.vacation_days < 1:
-                    msg = f"{self.fullname} have not enough vacation days. " \
-                          f"Remaining days: {self.vacation_days}. Requested: 1"
-                    raise ValueError(msg)
-                self.vacation_days -= 1
-                msg = f"Taking a single holiday. Remaining vacation days: {self.vacation_days}"
-                logger.info(msg)
-            except ValueError as va:
-                logger.info(va)
+            msg = f"Taking a single holiday. Remaining vacation days: {self.vacation_days}"
+        logger.info(msg)
 
 
+# noinspection PyTypeChecker
 @dataclass
 class Company:
     """A company representation"""
@@ -78,30 +67,12 @@ class Company:
     title: str
     employees: list[Employee]
 
-    def get_ceos(self) -> list[Employee]:
-        """Return employees list with role of CEO"""
+    def get_employees_by_role(self, role: str) -> list[Employee]:
+        """Return employees list with specific role"""
 
         result = []
         for employee in self.employees:
-            if employee.role.lower() == "ceo":
-                result.append(employee.fullname)
-        return result
-
-    def get_managers(self) -> list[Employee]:
-        """Return employees list with role of manager"""
-
-        result = []
-        for employee in self.employees:
-            if employee.role.lower() == "manager":
-                result.append(employee.fullname)
-        return result
-
-    def get_developers(self) -> list[Employee]:
-        """Return employees list with role of developer"""
-
-        result = []
-        for employee in self.employees:
-            if employee.role.lower() == "developer":
+            if employee.role.lower() == role.lower():
                 result.append(employee.fullname)
         return result
 
@@ -132,6 +103,6 @@ class Company:
             total_pay += self.pay(employee)
         msg = (
                   "The total payment to all employees is: $%.2f"
-              ) % (total_pay)
+              ) % total_pay
         logger.info(msg)
         return total_pay

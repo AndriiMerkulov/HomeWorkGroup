@@ -45,13 +45,13 @@ class TestSystem(unittest.TestCase):
         self.assertLogs(msg)
 
     def test_get_ceos(self):
-        self.assertEqual(self.firma.get_ceos(), ['Andrii Merkulov', 'Otto Fancent'])
+        self.assertEqual(self.firma.get_employees_by_role("ceo"), ['Andrii Merkulov', 'Otto Fancent'])
 
     def test_get_managers(self):
-        self.assertEqual(self.firma.get_managers(), ['Gramatton Clerick'])
+        self.assertEqual(self.firma.get_employees_by_role("manager"), ['Gramatton Clerick'])
 
     def test_get_developers(self):
-        self.assertEqual(self.firma.get_developers(), ['Serhii Mazur'])
+        self.assertEqual(self.firma.get_employees_by_role("developer"), ['Serhii Mazur'])
 
     def test_pay(self):
         self.assertEqual(self.firma.pay(self.employee_1), 6000.0)
