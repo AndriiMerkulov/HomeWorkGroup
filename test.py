@@ -5,6 +5,7 @@ from system import *
 
 class TestSystem(unittest.TestCase):
     def setUp(self):
+
         self.employee_1 = HourlyEmployee("Serhii", "Mazur", "developer", 100, 60.0)
         self.employee_2 = HourlyEmployee("Andrii", "Merkulov", "CEO")
         self.employee_3 = SalariedEmployee("Gramatton", "Clerick", "manager", 22500.0)
@@ -62,3 +63,4 @@ class TestSystem(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
