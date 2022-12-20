@@ -1,5 +1,5 @@
 """
-A very advanced employee management system
+Дуже продвинута система управління співробітниками
 
 """
 
@@ -13,7 +13,13 @@ logger.setLevel(logging.INFO)
 
 @dataclass
 class Employee:
-    """Basic employee representation"""
+    """Основна репрезентація працівника
+
+    :first_name: Ім'я працівника
+    :last_name: Прізвище працівника
+    :role: посада працівника
+
+    """
 
     first_name: str
     last_name: str
@@ -26,25 +32,45 @@ class Employee:
 
 @dataclass
 class HourlyEmployee(Employee):
-    """Represents employees who are paid on worked hours base"""
+    """Клас представляє працівників, які отримують погодинну оплату
+
+    hours_worked: Загальна кількість відпрацьованих години
+    hourly_rate: Оплата за годину
+
+    """
 
     hours_worked: int = 0
     hourly_rate: float = 50.0
 
     def log_work(self, hours: int) -> None:
-        """Log working hours"""
+        """Журнал робочих годин
+
+        hours: кількість відпрацьованих годин
+
+        """
 
         self.hours_worked += hours
 
 
 @dataclass
 class SalariedEmployee(Employee):
-    """Represents employees who are paid on a monthly salary base"""
+    """Клас представляє працівників, які отримують щомісячний оклад
+
+    salary: Оплата за місяць
+    vacation_days: Кількість днів відпустки
+
+    """
 
     salary: float
     vacation_days: int = 0
 
     def take_holiday(self, requested_days: int = 1, payout: bool = False) -> None:
+        """Метод для надання працівникові відпустки
+
+        requested_days: Кількість днів відпустки які  хоче взяти співробітник
+        payout: Оплачувана відпустка чи ні
+
+        """
         if self.vacation_days < requested_days:
             msg = f"{self.fullname} have not enough vacation days. Remaining days: {self.vacation_days}. Requested: {requested_days}"
             logger.error(msg)
@@ -60,13 +86,22 @@ class SalariedEmployee(Employee):
 # noinspection PyTypeChecker
 @dataclass
 class Company:
-    """A company representation"""
+    """Репрезентація компанії
+
+    title: Назва компанії
+    employees: Список працівників компанії
+
+    """
 
     title: str
     employees: list[Employee]
 
     def get_employees_by_role(self, role: str) -> list[Employee]:
-        """Return employees list with specific role"""
+        """Список співробітників із певною посадою
+
+        role: Посда співробітника
+
+        """
 
         result = []
         for employee in self.employees:
@@ -76,7 +111,11 @@ class Company:
 
     @staticmethod
     def pay(employee: Employee) -> float:
-        """Pay to employee"""
+        """Оплата працівнику
+
+        employee: Працівник
+
+        """
 
         if isinstance(employee, SalariedEmployee):
             msg = (
@@ -94,7 +133,7 @@ class Company:
             return paying
 
     def pay_all(self) -> None:
-        """Pay all the employees in this company"""
+        """Заробітна плата всім працівникам цієї компанії"""
 
         total_pay = 0
         for employee in self.employees:
@@ -105,4 +144,7 @@ class Company:
         logger.info(msg)
         return total_pay
 
+
+if __name__ == '__main__':
+    ...
 
