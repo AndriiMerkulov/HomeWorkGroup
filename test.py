@@ -5,7 +5,6 @@ from system import *
 
 class TestSystem(unittest.TestCase):
     def setUp(self):
-
         self.employee_1 = HourlyEmployee("Serhii", "Mazur", "developer", 100, 60.0)
         self.employee_2 = HourlyEmployee("Andrii", "Merkulov", "CEO")
         self.employee_3 = SalariedEmployee("Gramatton", "Clerick", "manager", 22500.0)
@@ -43,14 +42,10 @@ class TestSystem(unittest.TestCase):
         self.employee_4.take_holiday(5, True)
         self.assertLogs(msg)
 
-    def test_get_ceos(self):
-        self.assertEqual(self.firma.get_ceos(), ['Andrii Merkulov', 'Otto Fancent'])
-
-    def test_get_managers(self):
-        self.assertEqual(self.firma.get_managers(), ['Gramatton Clerick'])
-
-    def test_get_developers(self):
-        self.assertEqual(self.firma.get_developers(), ['Serhii Mazur'])
+    def test_get_employees_by_role(self):
+        self.assertEqual(self.firma.get_employees_by_role('ceo'), ['Andrii Merkulov', 'Otto Fancent'])
+        self.assertEqual(self.firma.get_employees_by_role('developer'), ['Serhii Mazur'])
+        self.assertEqual(self.firma.get_employees_by_role('manager'), ['Gramatton Clerick'])
 
     def test_pay(self):
         self.assertEqual(self.firma.pay(self.employee_1), 6000.0)
@@ -63,4 +58,3 @@ class TestSystem(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
